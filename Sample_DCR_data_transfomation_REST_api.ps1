@@ -23,40 +23,44 @@
 # VARIABLES
 ####################################################
 
-    # here you put the ResourceID of the Data Collection Rules (a sample is provided below)
-    $ResourceId = "/subscriptions/xxxxxx/resourceGroups/rg-logworkspaces/providers/microsoft.insights/dataCollectionRules/dcr-ingest-exclude-security-eventid"
+# here you put the ResourceID of the Data Collection Rules (a sample is provided below)
+$ResourceId = "/subscriptions/xxxxxx/resourceGroups/rg-logworkspaces/providers/microsoft.insights/dataCollectionRules/dcr-ingest-exclude-security-eventid"
     
-    # here you put a path and file name where you want to store the temporary file-extract from DCR (a sample is provided below)
-    $FilePath   = "c:\tmp\dcr-ingest-exclude-security-eventid.txt"
+# here you put a path and file name where you want to store the temporary file-extract from DCR (a sample is provided below)
+$FilePath   = "c:\tmp\dcr-ingest-exclude-security-eventid.txt"
 
 
 ####################################################
 # CONNECT TO AZURE
 ####################################################
 
-    Connect-AzAccount
+Connect-AzAccount
 
 ####################################################
-# STEP 1 - EXPORT EXISTING DCR TO FILE
+# EXPORT EXISTING DCR TO FILE
 ####################################################
 
-    $DCR = Invoke-AzRestMethod -Path ("$ResourceId"+"?api-version=2021-09-01-preview") -Method GET
-    $DCR.Content | ConvertFrom-Json | ConvertTo-Json -Depth 20 | Out-File -FilePath $FilePath
+$DCR = Invoke-AzRestMethod -Path ("$ResourceId"+"?api-version=2021-09-01-preview") -Method GET
+
+$DCR.Content | ConvertFrom-Json | ConvertTo-Json -Depth 20 | Out-File -FilePath $FilePath
+
 
 ####################################################
-# STEP 2 - MODIFY FILE AND ADD TRANSFORMKQL CMDs
+# MODIFY FILE AND ADD TRANSFORMKQL CMDs
 ####################################################
 
-    <#    
-        SAMPLES
-        "transformKql": "source\n| where (EventID != 8002) and (EventID != 5058) and (EventID != 4662) and (EventID != 4688)",
+<#    
+    SAMPLES
+    "transformKql": "source\n| where (EventID != 8002) and (EventID != 5058) and (EventID != 4662) and (EventID != 4688)",
 
-        "transformKql": "source\n| where EventID != 5145",
-        "outputStream": "Microsoft-SecurityEvent"
-    #>
+    "transformKql": "source\n| where EventID != 5145",
+    "outputStream": "Microsoft-SecurityEvent"
+#>
 
 ####################################################
-# STEP 3 - UPLOAD FILE / UPDATE DCR WITH TRANSFORM
+# UPLOAD FILE / UPDATE DCR WITH TRANSFORM
 ####################################################
-    $DCRContent = Get-Content $FilePath -Raw 
-    Invoke-AzRestMethod -Path ("$ResourceId"+"?api-version=2021-09-01-preview") -Method PUT -Payload $DCRContent
+
+$DCRContent = Get-Content $FilePath -Raw 
+
+Invoke-AzRestMethod -Path ("$ResourceId"+"?api-version=2021-09-01-preview") -Method PUT -Payload $DCRContent
