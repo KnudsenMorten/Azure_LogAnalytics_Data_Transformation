@@ -8,7 +8,8 @@
     VERSION: 2212
 
     .COPYRIGHT
-    @mortenknudsendk on Twitter (new followers appreciated) | https://mortenknudsen.net
+    @mortenknudsendk on Twitter (new followers appreciated)
+    Blog: https://mortenknudsen.net
     
     .LICENSE
     Licensed under the MIT license.
