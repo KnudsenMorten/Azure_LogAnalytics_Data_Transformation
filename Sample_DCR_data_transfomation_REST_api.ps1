@@ -24,7 +24,7 @@
 ####################################################
 
     # here you put the ResourceID of the Data Collection Rules
-    $ResourceId = "/subscriptions/fce4f282-fcc6-43fb-94d8-bf1701b862c3/resourceGroups/rg-logworkspaces/providers/microsoft.insights/dataCollectionRules/dcr-ingest-exclude-security-eventid"
+    $ResourceId = "/subscriptions/xxxxxx/resourceGroups/rg-logworkspaces/providers/microsoft.insights/dataCollectionRules/dcr-ingest-exclude-security-eventid"
     
     # here you put a path and file name where you want to store the temporary file-extract from DCR
     $FilePath   = "c:\tmp\dcr-ingest-exclude-security-eventid.txt"
